@@ -163,7 +163,8 @@ class Part implements \RecursiveIterator
         if (null === $this->decodedContent) {
             switch ($this->getEncoding()) {
                 case self::ENCODING_BASE64:
-                    $this->decodedContent = base64_decode($this->getContent($keepUnseen));
+                    $content = preg_replace("/\-\-\=\=(.+)\-\-/i", "", $this->getContent($keepUnseen));
+                    $this->decodedContent = base64_decode($content);
                     break;
                 case self::ENCODING_QUOTED_PRINTABLE:
                     $this->decodedContent =  quoted_printable_decode($this->getContent($keepUnseen));
